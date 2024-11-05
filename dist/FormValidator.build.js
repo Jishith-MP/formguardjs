@@ -15,7 +15,6 @@
  * License: MIT
  */
 
-document.addEventListener('DOMContentLoaded', () => {
     console.log("This is the development version of FormValidator.js. For production, use the *min.js version!");
     class FormValidator {
         constructor(form, options = {}) {
@@ -219,4 +218,3 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.error-border').forEach(input => input.classList.remove('error-border'));
         }
     }
-});

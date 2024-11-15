@@ -61,14 +61,7 @@ To initialize the validator, use the following code:
 ```javascript
 // Example usage
 const form = document.querySelector('#myForm');
-const validator = new FormGuard(form, { 
-    // Optional configurations
-    errorBorderColor: 'yellow',
-    errorMessageColor: 'beige',
-    errorMessageFontSize: '10px',
-    errorMessageMarginBottom: '5px',
-    errorMessageMarginTop: '3px'
-});
+const validator = new FormGuard(form, {});
 validator.init();
 ```
 

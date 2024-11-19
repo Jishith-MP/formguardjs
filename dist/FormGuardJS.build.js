@@ -221,7 +221,7 @@ class FormGuard {
             const input = this.form.querySelector(`[name="${name}"]`);
             const errorMessage = document.createElement('div');
             errorMessage.classList.add('formGuard_error-message');
-            errorMessage.innerText = this.errors[name];
+            errorMessage.textContent = this.errors[name];
             input.parentNode.insertBefore(errorMessage, input.nextSibling);
         }
     }

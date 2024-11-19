@@ -1,7 +1,7 @@
 /**
  * FormValidator.js - A lightweight form validation library
  * 
- * Version: 1.0
+ * Version: 1.0.1
  * 
  * Note: This is the development version. In production, use the minified version.
  * 
@@ -12,57 +12,75 @@
  * Author: Jishith MP
  * License: MIT
  */
- 
 
 console.log("This is the development version of FormValidator.js. For production, use the *min.js version!");
 
 const styles = document.createElement('style');
 styles.innerHTML = `
-    .error-message {
+    .formGuard_error-message {
         color: red;
         font-size: 0.9em;
         margin-bottom: 10px;
     }
-    .error-border {
+    .formGuard_error-field {
         border-color: red;
     }
 `;
-document.head.appendChild(styles);
+document.head.insertBefore(styles, document.head.firstChild);
 
 class FormGuard {
     constructor(form, options = {}) {
         this.form = form;
         this.options = options;
         this.errors = {};
-        this.init();
+
+        if (!this.options.onSubmit || typeof this.options.onSubmit !== 'function') {
+            throw new Error('The `onSubmit` callback is required and must be a function.');
+        }
+
+        this.initialize();
     }
 
-    init() {
-        this.form.addEventListener('submit', (event) => {
-            this.clearErrorMessages();
+    initialize() {
+        this.form.addEventListener('submit', async (event) => {
+            this.clearErrorMessages(); 
             const inputs = this.form.querySelectorAll('input, textarea');
             let valid = true;
 
             inputs.forEach(input => {
                 if (!input.name) {
-                    console.error(Validation error: the input field is missing a *name attribute! Element: ${input});
+                    console.error(`Validation error: the input field is missing a *name attribute! Element:`, input);
                     valid = false;
                 }
             });
 
-            this.validate();
-            if (!valid || Object.keys(this.errors).length > 0) event.preventDefault();
+            this.init();
+
+            if (!valid || Object.keys(this.errors).length > 0) {
+                event.preventDefault(); 
+                return;
+            }
+
+            
+            event.preventDefault();
+            try {
+                await this.options.onSubmit(new FormData(this.form), event);
+            } catch (error) {
+                console.error('Error during form submission:', error);
+            }
         });
     }
 
-    validate() {
+    init() {
         this.clearErrors();
         const inputs = this.form.querySelectorAll('input, textarea');
 
         inputs.forEach(input => {
             try {
                 const rules = input.dataset.rules ? JSON.parse(input.dataset.rules) : {};
-                if (!input.dataset.rules) console.error(No rules found for ${input.name}: *data-rules attribute is missing!);
+                if (!input.dataset.rules) {
+                    console.error(`No rules found for ${input.name}: *data-rules attribute is missing!`);
+                }
 
                 // Required field validation
                 if (rules.required && !input.value.trim()) {
@@ -73,11 +91,11 @@ class FormGuard {
                 // Number validation
                 if (input.type === 'number' && input.value.trim() !== '') {
                     if (rules.min && input.value < rules.min) {
-                        this.addError(input, rules.messages?.min || Minimum value is ${rules.min});
+                        this.addError(input, rules.messages?.min || `Minimum value is ${rules.min}`);
                         this.applyErrorStyle(input);
                     }
                     if (rules.max && input.value > rules.max) {
-                        this.addError(input, rules.messages?.max || Maximum value is ${rules.max});
+                        this.addError(input, rules.messages?.max || `Maximum value is ${rules.max}`);
                         this.applyErrorStyle(input);
                     }
                 }
@@ -99,7 +117,7 @@ class FormGuard {
 
                 // Checkbox validation
                 if (input.type === 'checkbox' && rules.required) {
-                    const checkboxes = this.form.querySelectorAll(input[name="${input.name}"]);
+                    const checkboxes = this.form.querySelectorAll(`input[name="${input.name}"]`);
                     const checked = Array.from(checkboxes).some(checkbox => checkbox.checked);
                     if (!checked) {
                         this.addError(input, rules.messages?.required || 'At least one option must be selected');
@@ -113,11 +131,11 @@ class FormGuard {
                     const maxLength = rules.maxLength || null;
                     if (input.value.trim() !== "") {
                         if (minLength && input.value.length < minLength) {
-                            this.addError(input, rules.messages?.minLength || Must be at least ${minLength} characters);
+                            this.addError(input, rules.messages?.minLength || `Must be at least ${minLength} characters`);
                             this.applyErrorStyle(input);
                         }
                         if (maxLength && input.value.length > maxLength) {
-                            this.addError(input, rules.messages?.maxLength || Must be no more than ${maxLength} characters);
+                            this.addError(input, rules.messages?.maxLength || `Must be no more than ${maxLength} characters`);
                             this.applyErrorStyle(input);
                         }
                     }
@@ -137,7 +155,7 @@ class FormGuard {
 
                 // Radio button validation
                 if (input.type === 'radio' && rules.required) {
-                    const radios = this.form.querySelectorAll(input[name="${input.name}"]);
+                    const radios = this.form.querySelectorAll(`input[name="${input.name}"]`);
                     const checked = Array.from(radios).some(radio => radio.checked);
                     if (!checked) {
                         this.addError(input, rules.messages?.required || 'Please select an option');
@@ -145,7 +163,7 @@ class FormGuard {
                     }
                 }
             } catch (e) {
-                console.error(Error parsing rules for *${input.name}: ${e.message});
+                console.error(`Error parsing rules for *${input.name}: ${e.message}`);
             }
         });
         this.showErrors();
@@ -161,31 +179,31 @@ class FormGuard {
 
         // Validate password length
         if (password.length < minLength) {
-            this.addError(input, messages.minLength || Password must be at least ${minLength} characters);
+            this.addError(input, messages.minLength || `Password must be at least ${minLength} characters`);
             this.applyErrorStyle(input);
         }
         // Validate the number of capital letters
         if (capCount < capitalLetters) {
-            this.addError(input, messages.capitalLetters || Password must contain at least ${capitalLetters} capital letter(s));
+            this.addError(input, messages.capitalLetters || `Password must contain at least ${capitalLetters} capital letter(s)`);
             this.applyErrorStyle(input);
         }
         // Validate the number of lowercase letters
         if (smallCount < smallLetters) {
-            this.addError(input, messages.smallLetters || Password must contain at least ${smallLetters} small letter(s));
+            this.addError(input, messages.smallLetters || `Password must contain at least ${smallLetters} small letter(s)`);
             this.applyErrorStyle(input);
         }
         // Validate the number of numbers
         if (numberCount < numbers) {
-            this.addError(input, messages.numbers || Password must contain at least ${numbers} number(s));
+            this.addError(input, messages.numbers || `Password must contain at least ${numbers} number(s)`);
             this.applyErrorStyle(input);
         }
         // Validate the number of special symbols
         if (symbolCount < symbols) {
-            this.addError(input, messages.symbols || Password must contain at least ${symbols} symbol(s));
+            this.addError(input, messages.symbols || `Password must contain at least ${symbols} symbol(s)`);
             this.applyErrorStyle(input);
         }
     }
-    
+
     addError(input, message) {
         this.errors[input.name] = message;
     }
@@ -195,21 +213,22 @@ class FormGuard {
     }
 
     applyErrorStyle(input) {
-        input.classList.add('error-border');
+        input.classList.add('formGuard_error-field');
     }
 
     showErrors() {
         for (const name in this.errors) {
-            const input = this.form.querySelector([name="${name}"]);
+            const input = this.form.querySelector(`[name="${name}"]`);
             const errorMessage = document.createElement('div');
-            errorMessage.classList.add('error-message');
+            errorMessage.classList.add('formGuard_error-message');
             errorMessage.innerText = this.errors[name];
             input.parentNode.insertBefore(errorMessage, input.nextSibling);
         }
     }
 
     clearErrorMessages() {
-        document.querySelectorAll('.error-message').forEach(error => error.remove());
-        document.querySelectorAll('.error-border').forEach(input => input.classList.remove('error-border'));
+        document.querySelectorAll('.formGuard_error-message').forEach(error => error.remove());
+        document.querySelectorAll('.formGuard_error-field').forEach(input => input.classList.remove('formGuard_error-field'));
     }
-}
+             }
+         

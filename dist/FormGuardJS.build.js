@@ -1,7 +1,7 @@
 /**
  * FormValidator.js - A lightweight form validation library
  * 
- * Version: 1.0.1
+ * Version: 1.0.0
  * 
  * Note: This is the development version. In production, use the minified version.
  * 

@@ -1,5 +1,5 @@
 /**
- * FormValidator.js - A lightweight form validation library
+ * FormGuardJS - A lightweight form validation library
  * 
  * Version: 1.0.0
  * 

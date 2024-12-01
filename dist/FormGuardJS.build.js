@@ -13,7 +13,7 @@
  * License: MIT
  */
 
-console.log("This is the development version of FormValidator.js. For production, use the *min.js version!");
+console.log("This is the development version of FormGuardJS For production, use the *min.js version!");
 
 const styles = document.createElement('style');
 styles.innerHTML = `

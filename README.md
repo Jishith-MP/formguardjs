@@ -61,11 +61,14 @@ To initialize the validator, use the following code:
 ```javascript
 // Example usage
 const form = document.querySelector('#myForm');
-const validator = new FormGuard(form, {});
-validator.init();
+const validator = new FormGuard(form, {
+onSubmit: () => {
+//custom validation here
+alert('Form submitted');
+}
+});
 ```
 
-**Note**: The optional configurations have default values, so you can customize them according to your needs.
 
 ## Contributing
 
@@ -77,4 +80,12 @@ This project is licensed under the MIT License.
 
 ---
 
-For more information, please check the [Documentation](https://formguardjs.web.app/documentation.html)
+## Get in Touch  
+You can contact us via email:  
+[formguardjs@gmail.com](mailto:formguardjs@gmail.com)  
+
+We aim to respond to all inquiries within 24-48 hours.  
+
+For more information, please check the [Documentation](https://formguardjs-io.web.app/documentation.html)
+Thank you for using **FormGuardJS**!
+

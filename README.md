@@ -87,5 +87,6 @@ You can contact us via email:
 We aim to respond to all inquiries within 24-48 hours.  
 
 For more information, please check the [Documentation](https://formguardjs-io.web.app/documentation.html)
+
 Thank you for using **FormGuardJS**!
 

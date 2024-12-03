@@ -24,7 +24,7 @@
    npm install formguardjs
    ```
 
-3. **CDN Module**: FormGuard is also available via a CDN on the [official website](https://formguardjs.web.app).
+3. **CDN Module**: FormGuard is also available via a CDN on the [official website](https://formguardjs-io.web.app).
 
 ### Usage
 

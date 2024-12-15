@@ -52,7 +52,7 @@ class FormGuard {
 
    async handleSubmit(event) {
       try {
-         this.clearErrorMessages(); // Clear previous error messages
+         this.clearErrorMessages(); 
          const inputs = this.form.querySelectorAll('input, textarea');
          let valid = true;
 
@@ -66,7 +66,7 @@ class FormGuard {
          this.init();
 
          if (!valid || Object.keys(this.errors).length > 0) {
-            event.preventDefault(); // Prevent form submission if validation fails
+            event.preventDefault(); 
             return;
          }
 
@@ -98,7 +98,7 @@ class FormGuard {
                   try {
                      const response = await fetch(dataRules);
                      const data = await response.json();
-                     rules = data || {}; // Ensure it defaults to an empty object if data is empty
+                     rules = data || {};
                   } catch (e) {
                      console.error(`error fetching rules from ${dataRules}:`, e.message);
                   }
@@ -107,7 +107,7 @@ class FormGuard {
                   try {
                      const response = await fetch(dataRules);
                      const data = await response.json();
-                     rules = data || {}; // Ensure it defaults to an empty object if data is empty
+                     rules = data || {}; 
                   } catch (e) {
                      console.error(`error fetching rules from ${dataRules}:`, e.message);
                   }
@@ -116,7 +116,7 @@ class FormGuard {
                }
             }
 
-            rules = rules || {}; // Ensure rules is always an object
+            rules = rules || {}; 
 
             function isValidPath(path) {
                return /^[a-zA-Z0-9/_-]+(\.[a-zA-Z0-9]+)?$/.test(path);
@@ -185,6 +185,7 @@ class FormGuard {
                }
             }
 
+             //tel validation 
             if (input.type === 'tel') {
                const telPattern = /^[0-9]{10}$/;
                if (input.value.trim() && !telPattern.test(input.value)) {
@@ -193,16 +194,19 @@ class FormGuard {
                }
             }
 
+             //file validation
             if (input.type === 'file' && input.files.length === 0 && rules.required) {
                this.addError(input, 'Please select a file');
                this.applyErrorStyle(input);
             }
 
+             //range validation 
             if (input.type === 'range' && (input.value < rules.min || input.value > rules.max)) {
                this.addError(input, `Value must be between ${rules.min} and ${rules.max}`);
                this.applyErrorStyle(input);
             }
 
+             //time validation 
             if (input.type === 'time' && rules.required && !input.value.trim()) {
                this.addError(input, 'Time is required');
                this.applyErrorStyle(input);
@@ -210,16 +214,15 @@ class FormGuard {
 
             if (rules.pattern && input.value.trim()) {
                try {
-                  const regex = new RegExp(rules.pattern); // Attempt to create regex
+                  const regex = new RegExp(rules.pattern);
 
                   if (!regex.test(input.value)) {
                      this.addError(input, rules.messages?.pattern || 'Invalid format');
                      this.applyErrorStyle(input);
                   }
                } catch (error) {
-                  // Handle the error silently to avoid revealing pattern validation checks
-                  console.error('Regex pattern error:', error); // Log for devs, not for users
-                  this.addError(input, 'Invalid format'); // Provide generic error message
+                  console.error('Regex pattern error:', error); 
+                  this.addError(input, 'Invalid format'); 
                   this.applyErrorStyle(input);
                }
             }

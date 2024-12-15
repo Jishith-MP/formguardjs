@@ -34,13 +34,9 @@ Once installed, you can easily initialize FormGuard in your JavaScript:
 
 For ES6 modules:
 ```javascript
-import FormGuard from 'formguardjs';
+import FormGuard from '/FormGuardJS.min.es.js';
 ```
 
-For CommonJS:
-```javascript
-const FormGuard = require('formguardjs');
-```
 
 #### Example Usage
 

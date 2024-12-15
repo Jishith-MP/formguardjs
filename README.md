@@ -24,7 +24,22 @@
    npm install formguardjs
    ```
 
-3. **CDN Module**: FormGuard is also available via a CDN on the [official website](https://formguardjs-io.web.app).
+3. **CDN Module**: FormGuard is also available via a CDN on the [official website](https://formguardjs-io.web.app) 
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/Jishith-MP/formguardjs@main/dist/FormGuardJS.build.js"></script>
+```
+When you're in the development process, use our build.js file for more error tracking and easier debugging.
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/Jishith-MP/formguardjs@main/dist/FormGuardJS.min.js"></script>
+```
+When you’ve finished development, use min.js for production. It is optimized for production use, providing better performance.
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/Jishith-MP/formguardjs@main/dist/FormGuardJS.build.es.js"></script>
+```
+When you’ve finished development, use build.es.js for production. This is an ES module CDN optimized for modern JavaScript environments.
 
 ### Usage
 
@@ -54,7 +69,9 @@ Here’s an example of how to set up your form:
 
 To initialize the validator, use the following code:
 
-```javascript
+```html
+<script src="https://cdn.jsdelivr.net/gh/Jishith-MP/formguardjs@main/dist/FormGuardJS.min.js"></script>
+<script>
 // Example usage
 const form = document.querySelector('#myForm');
 const validator = new FormGuard(form, {
@@ -63,6 +80,7 @@ onSubmit: () => {
 alert('Form submitted');
 }
 });
+</script>
 ```
 
 

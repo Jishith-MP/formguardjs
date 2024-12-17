@@ -28,7 +28,7 @@ styles.innerHTML = `
 `;
 document.head.insertBefore(styles, document.head.firstChild);
 
- class FormGuard {
+ export default class FormGuard {
   constructor(form, options = {}) {
     this.form = form;
     this.options = options;

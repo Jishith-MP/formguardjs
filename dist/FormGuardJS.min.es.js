@@ -1,7 +1,7 @@
 /**
  * FormGuardJS - A lightweight form validation library
  * 
- * FormGuardJS.min.js
+ * FormGuardJS.min.es.js
  * 
  * Version: 1.1.2
  *
@@ -14,7 +14,7 @@
  */
 const styles = document.createElement("style");
 styles.innerHTML = "\n    .formGuard_error-message {\n        color: red;\n        font-size: 0.9em;\n        margin-bottom: 10px;\n    }\n    .formGuard_error-field {\n        border-color: red;\n    }\n", document.head.insertBefore(styles, document.head.firstChild);
-class FormGuard { constructor(r, e = {}) { if (this.form = r, this.options = e, this.errors = {}, this.handleSubmit = this.handleSubmit.bind(this), !this.options.onSubmit || "function" != typeof this.options.onSubmit) throw new Error("The `onSubmit` callback is required and must be a function.");
+export default class FormGuard { constructor(r, e = {}) { if (this.form = r, this.options = e, this.errors = {}, this.handleSubmit = this.handleSubmit.bind(this), !this.options.onSubmit || "function" != typeof this.options.onSubmit) throw new Error("The `onSubmit` callback is required and must be a function.");
       this.initialize() } async initialize() { this.form.addEventListener("submit", this.handleSubmit) } async handleSubmit(r) { try { this.clearErrorMessages(); const e = this.form.querySelectorAll("input, textarea"); let t = !0; if (e.forEach((r => { r.name || (t = !1) })), this.init(), !t || Object.keys(this.errors).length > 0) return void r.preventDefault();
          await this.options.onSubmit(new FormData(this.form), r) } catch (r) {} } async init() { this.clearErrors(); const r = this.form.querySelectorAll("input, textarea"),
          e = Array.from(r).map((async r => { let e = {}; try { const t = r.dataset.rules; if (t)
